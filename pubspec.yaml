@@ -1,0 +1,25 @@
+name: flutter_favorites_bloc
+description: Flutter Favorites app with bloc and API
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.1 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons:
+  flutter_bloc:
+  english_words:
+  firebase_core:
+  firebase_auth:
+  firebase_analytics:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
