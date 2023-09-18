@@ -19,8 +19,6 @@ class HistoryListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FavoriteBloc, FavoriteState>(builder: (context, state) {
       if (state is WordListLoadedState) {
-        debugPrint("${"HistoryListWidget.WordListLoadedState ".padRight(50, ".")} ${state.wordList.length}");
-        FavoriteBloc().listKey = _key;
         return ShaderMask(
           shaderCallback: (bounds) => _maskingGradient.createShader(bounds),
           blendMode: BlendMode.dstIn,

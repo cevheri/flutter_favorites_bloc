@@ -11,16 +11,7 @@ class FavoriteGeneratorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// AnimatedList needs a GlobalKey to animate the list items
-    var state = context.watch<FavoriteBloc>().state;
-    // Word? current;
-    // if (state is NextRandomPairState) {
-    //   current = state.current;
-    //   debugPrint("${"FavoriteGenerator.NextRandomPairState ".padRight(50, ".")} ${current.pair}");
-    // }
-    // if (state is ToggleFavoriteState) {
-    //   current = state.current;
-    //   debugPrint("${"FavoriteGenerator.ToggleFavoriteState ".padRight(50, ".")} ${current.pair}");
-    // }
+    context.watch<FavoriteBloc>().state;
 
     return Center(
       child: Column(

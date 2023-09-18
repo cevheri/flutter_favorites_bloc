@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:english_words/english_words.dart';
-import 'package:flutter/material.dart';
 
 import '../error/data_source_exception.dart';
 import '../model/word_model.dart';
