@@ -126,14 +126,16 @@ class _FavoriteDataSource {
   }
 
   Future<Word> like(WordPair favorite) async {
-    debugPrint("_wordList before like: $_wordList");
+    debugPrint("like >> _wordList before : $_wordList");
     for (var element in _wordList) {
       if (element.pair == favorite) {
-        element.isFavorite = true;
-        return element;
+        _wordList.remove(element);
+        var newElement = Word.from(pair: favorite, isFavorite: true);
+        _wordList.add(newElement);
+        debugPrint("_wordList after like: $_wordList");
+        return newElement;
       }
     }
-    debugPrint("_wordList after like: $_wordList");
     return add(Word.from(pair: favorite, isFavorite: true));
   }
 
@@ -141,9 +143,11 @@ class _FavoriteDataSource {
     debugPrint("_wordList before dislike: $_wordList");
     for (var element in _wordList) {
       if (element.pair == word) {
-        element.isFavorite = false;
+        _wordList.remove(element);
+        var newElement = Word.from(pair: word, isFavorite: false);
+        _wordList.add(newElement);
         debugPrint("_wordList after dislike: $_wordList");
-        return element;
+        return newElement;
       }
     }
     return add(Word.from(pair: word, isFavorite: false));
