@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'presentation/screen/home_page.dart';
 import 'presentation/bloc/favorite/favorite.dart';
+import 'presentation/screen/home_page.dart';
 
 void main() {
   runApp(const FavoriteApp());
@@ -15,7 +15,7 @@ class FavoriteApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-          BlocProvider<FavoriteBloc>(create: (_) => FavoriteBloc()),
+          BlocProvider<FavoriteBloc>(create: (_) => FavoriteBloc()..add(NextRandomPairEvent())),
       ],
       child: MaterialApp(
         title: 'Favorite App',

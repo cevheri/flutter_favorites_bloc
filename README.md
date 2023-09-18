@@ -4,6 +4,8 @@ Flutter Favorites app with bloc and API
 
 ## Getting Started
 
+## Introduction
+
 ### Flutter SDK
 
 ## Configuration
@@ -15,3 +17,13 @@ Flutter Favorites app with bloc and API
 ## Github Actions
 
 ## Mock API
+
+## Firebase
+
+### Firebase Web App
+
+### Firebase API
+
+### Firestore
+
+### Firebase Analytics

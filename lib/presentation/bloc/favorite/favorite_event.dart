@@ -6,8 +6,8 @@ abstract class FavoriteEvent{}
 class NextRandomPairEvent extends FavoriteEvent{}
 
 class ToggleFavoriteEvent extends FavoriteEvent{
-  final Favorite current;
+  final WordPair current;
   ToggleFavoriteEvent(this.current);
 }
 
-class LoadAllFavoritesEvent extends FavoriteEvent{}
+class FavoriteLoadAllEvent extends FavoriteEvent{}
