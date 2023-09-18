@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:english_words/english_words.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/error/data_source_exception.dart';
@@ -16,7 +17,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     on<FavoriteLoadAllEvent>(_loadAll);
     on<NextRandomPairEvent>(_nextRandomPair);
   }
-
+  GlobalKey? listKey = GlobalKey();
   final FavoriteRepository _favoriteRepository = FavoriteRepository.instance;
 
   Future<Word> nextRandomPair() async {
@@ -67,7 +68,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     emit(FavoriteLoadingState());
     try {
       final Set<Word> wordList = await getAllWords();
-      emit(FavoriteLoadedState(wordList: wordList));
+      emit(FavoriteHistoryPageLoadedState(wordList: wordList));
     } catch (e) {
       emit(FavoriteErrorState(message: "Unhandled Load Error"));
       rethrow;
@@ -87,11 +88,11 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     ToggleFavoriteEvent event,
     Emitter<FavoriteState> emit,
   ) async {
-    emit(FavoriteLoadingState()); 
+    emit(FavoriteLoadingState());
     try {
       Word favorite = await toggleFavorite(event.current);
-      final Set<Word> wordList = await getAllWords();
-      emit(ToggleFavoriteState(wordList: wordList, current: favorite));
+     // emit(ToggleFavoriteState(current: favorite));
+      emit(WordListLoadedState(wordList: await getAllWords(), current: favorite));
     } on DataSourceException catch (e) {
       emit(FavoriteErrorState(message: "Toggle Error: ${e.code}: ${e.message}"));
     }
@@ -101,7 +102,10 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     emit(FavoriteLoadingState());
     try {
       final current = await nextRandomPair();
-      emit(NextRandomPairState(current: current));
+      //emit(NextRandomPairState(current: current));
+      var animatedList = listKey?.currentState as AnimatedListState?;
+      animatedList?.insertItem(0, duration: const Duration(milliseconds: 1000));
+      emit(WordListLoadedState(wordList: await getAllWords(), current: current));
     } catch (e) {
       emit(FavoriteErrorState(message: "Unhandled Load Error"));
       rethrow;

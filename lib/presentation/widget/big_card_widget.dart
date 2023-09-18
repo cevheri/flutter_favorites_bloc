@@ -22,14 +22,10 @@ class BigCard extends StatelessWidget {
           child: MergeSemantics(
             child: BlocBuilder<FavoriteBloc, FavoriteState>(builder: (context, state) {
               Word? current;
-              if (state is NextRandomPairState ) {
+              if (state is WordListLoadedState ) {
                 current = state.current;
                 //debugPrint("${"BigCard.NextRandomPairState ".padRight(50,".")} ${current.pair}");
-              }else if(state is ToggleFavoriteState){
-                current = state.current;
-                //debugPrint("${"BigCard.ToggleFavoriteState ".padRight(50,".")} ${current.pair}");
               }
-
               return Wrap(children: [
                 Text(
                   current != null ? current.pair.first : 'Loading...',
