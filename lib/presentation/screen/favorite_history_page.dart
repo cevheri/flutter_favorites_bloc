@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_favorites_bloc/presentation/bloc/favorite/favorite.dart';
 
+/// The page that displays the history of the all generated pairs. <br>
+/// It is a stateless widget, meaning that it has no State object. <br>
+/// It also like and dislike options for each pair. <br>
 class FavoriteHistoryPage extends StatelessWidget {
   const FavoriteHistoryPage({super.key});
 

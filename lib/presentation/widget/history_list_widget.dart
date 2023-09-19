@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_favorites_bloc/presentation/bloc/favorite/favorite.dart';
 
+/// The [HistoryListWidget] displays the history of the words liked or disliked by the user. <br>
+/// It uses the [FavoriteBloc] to get the list of words and display them in a [ListView]. <br>
+/// The [HistoryListWidget] is used in the [FavoriteHistoryPage]. <br>
+/// It is a [StatelessWidget] because it does not need to manage its own state. <br>
 class HistoryListWidget extends StatelessWidget {
   HistoryListWidget({super.key});
 

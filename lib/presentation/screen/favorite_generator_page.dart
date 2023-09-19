@@ -5,6 +5,10 @@ import 'package:flutter_favorites_bloc/presentation/widget/big_card_widget.dart'
 import '../bloc/favorite/favorite.dart';
 import '../widget/history_list_widget.dart';
 
+/// The page that displays, likes and dislikes, and generates random pairs. <br>
+/// This page is the default page of the app. <br>
+/// It is a stateless widget, meaning that it has no State object. <br>
+/// It is used as a page in the [HomePage] widget. <br>
 class FavoriteGeneratorPage extends StatelessWidget {
   const FavoriteGeneratorPage({super.key});
 

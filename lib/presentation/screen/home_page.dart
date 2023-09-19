@@ -4,11 +4,12 @@ import 'favorite_generator_page.dart';
 import 'favorite_history_page.dart';
 
 
-/// The home page for the app
+/// The home page for the app <br>
 ///
-/// This widget is the root of the app.
-/// It is stateful, meaning that it has a State object (defined below)
-/// that contains fields that affect how it looks.
+/// This widget is the root of the app. <br>
+/// It is stateful, meaning that it has a State object (defined below) <br>
+/// that contains fields that affect how it looks. <br>
+/// selectedIndex is used to keep track of the current page. <br>
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

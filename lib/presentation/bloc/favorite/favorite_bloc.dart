@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:english_words/english_words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_favorites_bloc/presentation/screen/favorite_history_page.dart';
 
 import '../../../data/error/data_source_exception.dart';
 import '../../../data/model/word_model.dart';
@@ -10,15 +11,22 @@ import '../../../data/repository/favorite_repository.dart';
 part 'favorite_event.dart';
 part 'favorite_state.dart';
 
+/// The bloc that manages the state of the favorites.
+///
+/// [FavoriteBloc] extends [Bloc] and uses [FavoriteEvent] and [FavoriteState]
 class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   FavoriteBloc() : super(FavoriteInitialState()) {
     on<ToggleFavoriteEvent>(_toggleFavorite);
-    on<FavoriteLoadAllEvent>(_loadAll);
     on<NextRandomPairEvent>(_nextRandomPair);
   }
 
   final FavoriteRepository _favoriteRepository = FavoriteRepository.instance;
 
+  /// Load next random pair. <br>
+  /// It is public and common for all blocs.
+  ///
+  /// return: Future [Word] next random pair <br>
+  /// throw: [RepositoryException] if an error occurs <br>
   Future<Word> nextRandomPair() async {
     Word random = Word.random();
     return await _favoriteRepository.add(random);
@@ -27,11 +35,15 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   /// Load All favorites from repository
   ///
   /// return: Future [List<Word>] favorites <br>
+  /// throw: [RepositoryException] if an error occurs <br>
   Future<Set<Word>> getAllFavoriteWords() async {
     return await _favoriteRepository.getAllLiked();
   }
 
   /// Load All Word list for HistoryList
+  ///
+  /// return: Future [List<Word>] favorites <br>
+  /// throw: [RepositoryException] if an error occurs <br>
   Future<Set<Word>> getAllWords() async {
     return await _favoriteRepository.list();
   }
@@ -40,6 +52,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   ///
   /// param: [WordPair] pair <br>
   /// return: Future [Word] favorite <br>
+  /// throw: [RepositoryException] if an error occurs <br>
   Future<Word> like(WordPair pair) async {
     return await _favoriteRepository.like(pair);
   }
@@ -48,6 +61,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   ///
   /// param: [WordPair] pair <br>
   /// return: Future [Void] <br>
+  /// throw: [RepositoryException] if an error occurs <br>
   Future<Word> dislike(WordPair pair) async {
     return await _favoriteRepository.dislike(pair);
   }
@@ -56,25 +70,17 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   ///
   /// param: [Word] favorite <br>
   /// return: Future [Bool] <br>
+  /// throw: [RepositoryException] if an error occurs <br>
   Future<bool> _isFavorite(WordPair pair) async {
     return getAllFavoriteWords().then((list) => list.any((element) => element.pair == pair));
   }
 
-  FutureOr<Set<Word>> _loadAll(
-    FavoriteLoadAllEvent event,
-    Emitter<FavoriteState> emit,
-  ) async {
-    emit(FavoriteLoadingState());
-    try {
-      final Set<Word> wordList = await getAllWords();
-      emit(FavoriteHistoryPageLoadedState(wordList: wordList));
-    } catch (e) {
-      emit(FavoriteErrorState(message: "Unhandled Load Error"));
-      rethrow;
-    }
-    return Future.value(Set.identity());
-  }
-
+  /// Toggle favorite for current pair <br>
+  /// If the current pair is already liked, it will be disliked and vice versa.
+  ///
+  /// param: [WordPair] current <br>
+  /// return: Future [Word] favorite <br>
+  /// throw: [RepositoryException] if an error occurs <br>
   Future<Word> toggleFavorite(WordPair current) async {
     if (await _isFavorite(current)) {
       return await dislike(current);
@@ -83,6 +89,12 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     }
   }
 
+  /// Toggle favorite method for the [ToggleFavoriteEvent]
+  ///
+  /// param: [ToggleFavoriteEvent] event <br>
+  /// param: [Emitter<FavoriteState>] emit <br>
+  /// return: Future [Void] <br>
+  /// throw: [FavoriteErrorState] if an error occurs <br>
   FutureOr<void> _toggleFavorite(
     ToggleFavoriteEvent event,
     Emitter<FavoriteState> emit,
@@ -91,11 +103,17 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     try {
       Word favorite = await toggleFavorite(event.current);
       emit(WordListLoadedState(wordList: await getAllWords(), current: favorite));
-    } on DataSourceException catch (e) {
+    } on RepositoryException catch (e) {
       emit(FavoriteErrorState(message: "Toggle Error: ${e.code}: ${e.message}"));
     }
   }
 
+  /// Load next random pair method for the [NextRandomPairEvent]
+  ///
+  /// param: [NextRandomPairEvent] event <br>
+  /// param: [Emitter<FavoriteState>] emit <br>
+  /// return: Future [Void] <br>
+  /// throw: [FavoriteErrorState] if an error occurs <br>
   FutureOr<void> _nextRandomPair(NextRandomPairEvent event, Emitter<FavoriteState> emit) async {
     emit(FavoriteLoadingState());
     try {
