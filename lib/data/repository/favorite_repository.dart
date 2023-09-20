@@ -122,7 +122,7 @@ class FavoriteRepository {
 /// _FavoriteDataSource.instance;
 /// ```
 ///
-@Deprecated("Mock API will be used instead of this class in the next version")
+// @Deprecated("Mock API will be used instead of this class in the next version")
 class _FavoriteDataSource {
   final Set<Word> _wordList = {};
 
