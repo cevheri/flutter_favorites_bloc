@@ -1,0 +1,59 @@
+name: Analyze, Test, Build Web and Android
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  pipeline:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    # skip if commit message equals [skip ci]
+    if: github.event.head_commit.message != '[skip ci]'
+    timeout-minutes: 60
+
+    env:
+      FLUTTER_VERSION: 3.13.3
+      FlUTTER_CHANNEL: stable
+      DART_VERSION: 3.1.1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2.10.0
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: ${{ env.FlUTTER_CHANNEL }}
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1.5.0
+        with:
+          dart-version: ${{ env.DART_VERSION }}
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Build Web
+        run: flutter build web --release
+
+      - name: Build Android App Bundle
+        run: flutter build appbundle --release
+
+      - name: Build Web App Bundle
+        run: flutter build web --release --build-number ${{ github.run_number }}
+
+      - name: Build Android App Bundle
+        run: flutter build appbundle --release --build-number ${{ github.run_number }}
+
+
