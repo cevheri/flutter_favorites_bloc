@@ -4,8 +4,8 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_favorites_bloc/presentation/screen/favorite_history_page.dart';
 
-import '../../../data/error/data_source_exception.dart';
 import '../../../data/model/word_model.dart';
+import '../../../data/repository/error/data_source_exception.dart';
 import '../../../data/repository/favorite_repository.dart';
 
 part 'favorite_event.dart';
@@ -65,6 +65,15 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   Future<Word> dislike(WordPair pair) async {
     return await _favoriteRepository.dislike(pair);
   }
+
+  /// Remove all words
+  ///
+  /// return: Future [Void] <br>
+  /// throw: [RepositoryException] if an error occurs <br>
+  Future<void> clear() async {
+    return await _favoriteRepository.clear();
+  }
+
 
   /// Check if favorite is already in repository
   ///

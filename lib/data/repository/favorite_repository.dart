@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:english_words/english_words.dart';
 
-import '../error/data_source_exception.dart';
 import '../model/word_model.dart';
+import 'error/data_source_exception.dart';
 
 /// The repository that manages the data of the favorites.
 ///
@@ -106,6 +106,10 @@ class FavoriteRepository {
     } catch (e) {
       throw RepositoryException(message: "An error occurred while removing word", code: "favorite_remove_error");
     }
+  }
+
+  Future<void> clear() async {
+    _dataSource._wordList.clear();
   }
 
 }
